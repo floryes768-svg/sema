@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Trabajos{% endblock %}
+{% block content %}
+<div style="padding:40px; max-width:1000px; margin:0 auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+        <h1 style="color:#2b0830; margin:0;">Trabajos</h1>
+        {% if request.user.rol == 'maestro' %}
+            <a href="{% url 'trabajos:crear' %}">
+                <button style="background:#d88df4; color:white; border:none; padding:10px 24px; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer;">
+                    + Asignar trabajo
+                </button>
+            </a>
+        {% endif %}
+    </div>
+
+    {% if trabajos %}
+        <div style="display:grid; gap:16px;">
+            {% for trabajo in trabajos %}
+    <a href="{% url 'trabajos:detalle' trabajo.id %}" style="text-decoration:none;">
+        <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1); display:flex; justify-content:space-between; align-items:center; transition:transform 0.2s;"
+             onmouseover="this.style.transform='translateY(-3px)'"
+             onmouseout="this.style.transform='translateY(0)'">
+            <div>
+                <h3 style="color:#2b0830; margin:0 0 6px;">{{ trabajo.titulo }}</h3>
+                <p style="color:#7b5c8a; margin:0 0 4px; font-size:0.9rem;">{{ trabajo.clase.nombre }}</p>
+                {% if trabajo.descripcion %}
+                    <p style="color:#9b7ab0; margin:0; font-size:0.85rem;">{{ trabajo.descripcion }}</p>
+                {% endif %}
+            </div>
+            <div style="text-align:center; background:#f3d6fd; padding:10px 16px; border-radius:12px; min-width:100px;">
+                <p style="color:#9b59b6; font-size:0.75rem; margin:0; font-weight:600;">ENTREGA</p>
+                <p style="color:#2b0830; font-size:0.95rem; font-weight:700; margin:4px 0 0;">{{ trabajo.fecha_entrega }}</p>
+                </div>
+            </div>
+               </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align:center; padding:80px 20px; color:#9b7ab0;">
+            <p style="font-size:3rem;">📋</p>
+            {% if request.user.rol == 'maestro' %}
+                <p>No has asignado trabajos aún.</p>
+                <a href="{% url 'trabajos:crear' %}">
+                    <button style="background:#d88df4; color:white; border:none; padding:10px 24px; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; margin-top:12px;">
+                        Asignar primer trabajo
+                    </button>
+                </a>
+            {% else %}
+                <p>No tienes trabajos asignados aún.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

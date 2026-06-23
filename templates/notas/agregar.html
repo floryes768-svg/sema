@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Agregar Nota{% endblock %}
+{% block content %}
+<div style="max-width:500px; margin:60px auto; background:white; padding:40px; border-radius:20px; box-shadow:0 8px 32px rgba(140,60,180,0.15);">
+    <a href="{% url 'notas:index' %}" style="color:#d88df4; font-weight:600; text-decoration:none;">← Volver</a>
+    <h2 style="color:#2b0830; margin:16px 0 24px;">Agregar nota — {{ clase.nombre }}</h2>
+
+    {% if alumnos %}
+        <form method="POST">
+            {% csrf_token %}
+            <div style="margin-bottom:16px;">
+                <label style="font-weight:600; color:#4b2a5f;">Alumno</label>
+                <select name="alumno" required
+                    style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box;">
+                    {% for alumno in alumnos %}
+                        <option value="{{ alumno.id }}">{{ alumno.username }}{% if alumno.nombre_completo %} — {{ alumno.nombre_completo }}{% endif %}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="font-weight:600; color:#4b2a5f;">Título</label>
+                <input type="text" name="titulo" required placeholder="Ej: Examen parcial"
+                    style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="font-weight:600; color:#4b2a5f;">Descripción (opcional)</label>
+                <input type="text" name="descripcion" placeholder="Ej: Unidad 1"
+                    style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+            </div>
+            <div style="margin-bottom:24px;">
+                <label style="font-weight:600; color:#4b2a5f;">Calificación (0 - 100)</label>
+                <input type="number" name="calificacion" required min="0" max="100" step="0.01"
+                    style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+            </div>
+            <button type="submit"
+                style="width:100%; padding:12px; background:#d88df4; color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:600; cursor:pointer;">
+                Guardar nota
+            </button>
+        </form>
+    {% else %}
+        <div style="text-align:center; padding:40px 0; color:#9b7ab0;">
+            <p style="font-size:2rem;">👥</p>
+            <p>No hay alumnos en esta clase aún.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

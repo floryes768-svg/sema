@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}{{ materia.nombre }}{% endblock %}
+{% block content %}
+<div style="padding:40px; max-width:1000px; margin:0 auto;">
+
+    
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:30px;">
+        <div style="display:flex; align-items:center; gap:16px;">
+            <div style="width:56px; height:56px; background:#d88df4; border-radius:14px; display:flex; align-items:center; justify-content:center;">
+                <span style="color:white; font-size:1.8rem; font-weight:700;">{{ materia.nombre|first|upper }}</span>
+            </div>
+            <div>
+                <h1 style="color:#2b0830; margin:0;">{{ materia.nombre }}</h1>
+                <span style="color:#9b7ab0; font-size:0.95rem;">{{ materia.especialidad }}</span>
+            </div>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <a href="{% url 'clases:editar_materia' materia.id %}">
+                <button style="background:#f3d6fd; color:#7b2fa0; border:none; padding:8px 16px; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                    Editar materia
+                </button>
+            </a>
+            <a href="{% url 'clases:eliminar_materia' materia.id %}">
+                <button style="background:#fde8e8; color:#c0392b; border:none; padding:8px 16px; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                     Eliminar materia
+                </button>
+            </a>
+            <a href="{% url 'clases:especialidades' materia.nombre %}">
+                <button style="background:#ede0f7; color:#5c2d7a; border:none; padding:8px 16px; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                    ← Volver
+              </button>
+             </a>
+        </div>
+    </div>
+
+    
+    <h2 style="color:#4b2a5f; font-size:1rem; margin-bottom:16px; text-transform:uppercase; letter-spacing:1px;">Grupos por semestre</h2>
+
+    {% if grupos %}
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:20px;">
+            {% for grupo in grupos %}
+                <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1);">
+                    <a href="{% url 'clases:detalle' grupo.id %}" style="text-decoration:none;">
+                        <span style="background:#ede0f7; color:#5c2d7a; padding:4px 14px; border-radius:20px; font-size:0.85rem; font-weight:700;">
+                            {{ grupo.get_semestre_display }}
+                        </span>
+                        <p style="color:#7b5c8a; font-size:0.85rem; margin:10px 0 4px;">{{ grupo.especialidad }}</p>
+                        {% if grupo.descripcion %}
+                            <p style="color:#9b7ab0; font-size:0.82rem; margin:0 0 12px;">{{ grupo.descripcion }}</p>
+                        {% endif %}
+                        <span style="background:#f3d6fd; color:#7b2fa0; padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:600;">
+                            Código: {{ grupo.codigo }}
+                        </span>
+                        <p style="color:#b39cc4; font-size:0.8rem; margin:10px 0 0;">
+                            {{ grupo.alumnos.count }} alumno{{ grupo.alumnos.count|pluralize }}
+                        </p>
+                    </a>
+                    <div style="display:flex; gap:8px; margin-top:14px; border-top:1px solid #f0e0fa; padding-top:14px;">
+                        <a href="{% url 'clases:editar_grupo' grupo.id %}" style="flex:1;">
+                            <button style="width:100%; background:#f3d6fd; color:#7b2fa0; border:none; padding:7px; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer;">
+                                 Editar
+                            </button>
+                        </a>
+                        <a href="{% url 'clases:eliminar_grupo' grupo.id %}" style="flex:1;">
+                            <button style="width:100%; background:#fde8e8; color:#c0392b; border:none; padding:7px; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer;">
+                                 Eliminar
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align:center; padding:60px 20px; color:#9b7ab0;">
+            <p style="font-size:2.5rem;">📋</p>
+            <p style="font-size:1rem;">No hay grupos creados aún.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

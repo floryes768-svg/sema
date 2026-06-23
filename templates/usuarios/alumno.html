@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Área Alumno{% endblock %}
+
+{% block content %}
+<div style="padding: 40px; max-width: 900px; margin: auto;">
+
+    <h1 style="color:#2b0830;">Bienvenido Alumno, {{ request.user.username }} 👋</h1>
+
+    <p style="font-size:1.1rem; margin-top:10px;">
+        Bienvenido al Sistema de Gestión Escolar <strong>SEMA</strong>, tu plataforma para 
+        organizar y consultar tu información académica en un solo lugar.
+    </p>
+
+    <h2 style="color:#2b0830; margin-top:30px;">¿Qué es SEMA?</h2>
+    <p>
+        SEMA es un sistema diseñado para facilitar la comunicación entre alumnos y maestros,
+        permitiendo el acceso rápido a clases, notas, trabajos y calificaciones de forma
+        organizada y eficiente.
+    </p>
+
+    <h2 style="color:#2b0830; margin-top:30px;">Sirve para </h2>
+    <ul style="line-height: 2rem; font-size:1rem;">
+        <li> Consulta tus <strong>clases</strong> y materias en cualquier momento.</li>
+        <li> Revisa tus <strong>notas</strong> y apuntes fácilmente.</li>
+        <li> Accede a tus <strong>trabajos</strong> asignados sin complicaciones.</li>
+        <li> Consulta tus <strong>calificaciones</strong> al instante.</li>
+        <li> Tu información siempre segura y solo accesible para ti.</li>
+    </ul>
+
+</div>
+{% endblock %}

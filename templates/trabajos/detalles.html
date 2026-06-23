@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}{{ trabajo.titulo }}{% endblock %}
+{% block content %}
+<div style="padding:40px; max-width:800px; margin:0 auto;">
+    <a href="{% url 'trabajos:index' %}" style="color:#d88df4; font-weight:600; text-decoration:none;">← Volver</a>
+
+    <div style="background:white; border-radius:20px; padding:32px; margin-top:20px; box-shadow:0 4px 16px rgba(140,60,180,0.1);">
+        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:24px;">
+            <div>
+                <h1 style="color:#2b0830; margin:0;">{{ trabajo.titulo }}</h1>
+                <p style="color:#7b5c8a; margin:8px 0 0;">{{ trabajo.clase.nombre }}</p>
+                {% if trabajo.descripcion %}
+                    <p style="color:#4b2a5f; margin:12px 0 0;">{{ trabajo.descripcion }}</p>
+                {% endif %}
+                {% if trabajo.imagen %}
+                    <img src="{{ trabajo.imagen.url }}" alt="Imagen del trabajo"
+                        style="width:100%; border-radius:12px; margin-top:16px; max-height:400px; object-fit:cover;">
+                {% endif %}
+            </div>
+            <div style="background:#f3d6fd; padding:12px 20px; border-radius:12px; text-align:center;">
+                <p style="color:#9b59b6; font-size:0.8rem; margin:0; font-weight:600;">ENTREGA</p>
+                <p style="color:#2b0830; font-size:1.1rem; font-weight:700; margin:4px 0 0;">{{ trabajo.fecha_entrega }}</p>
+            </div>
+        </div>
+
+        {% if request.user.rol == 'alumno' %}
+            {% if ya_entrego %}
+                <div style="background:#e8f5e9; border-radius:12px; padding:16px; margin-bottom:24px;">
+                    <p style="color:#2e7d32; font-weight:600; margin:0;">✅ Ya entregaste este trabajo</p>
+                    {% if ya_entrego.calificacion %}
+                        <p style="color:#2e7d32; margin:4px 0 0;">Calificación: <strong>{{ ya_entrego.calificacion }}</strong></p>
+                    {% else %}
+                        <p style="color:#7b5c8a; margin:4px 0 0;">Pendiente de calificación</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <h3 style="color:#4b2a5f; margin-bottom:16px;">Entregar trabajo</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div style="margin-bottom:16px;">
+                        <label style="font-weight:600; color:#4b2a5f;">Comentario (opcional)</label>
+                        <textarea name="comentario" rows="3" placeholder="Agrega un comentario..."
+                            style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none; resize:vertical;"></textarea>
+                    </div>
+                    <button type="submit"
+                        style="padding:12px 32px; background:#d88df4; color:white; border:none; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer;">
+                        Entregar
+                    </button>
+                </form>
+            {% endif %}
+        {% endif %}
+
+        {% if request.user.rol == 'maestro' %}
+            <h3 style="color:#4b2a5f; margin-bottom:16px;">Entregas ({{ entregas.count }})</h3>
+            {% if entregas %}
+                <div style="display:grid; gap:12px;">
+                    {% for entrega in entregas %}
+                        <div style="background:#faf5ff; border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center;">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="width:40px; height:40px; background:#d88df4; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700;">
+                                    {{ entrega.alumno.username|first|upper }}
+                                </div>
+                                <div>
+                                    <p style="margin:0; font-weight:600; color:#2b0830;">{{ entrega.alumno.username }}</p>
+                                    {% if entrega.comentario %}
+                                        <p style="margin:0; font-size:0.85rem; color:#9b7ab0;">{{ entrega.comentario }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                {% if entrega.calificacion %}
+                                    <span style="background:#f3d6fd; color:#7b2fa0; padding:4px 12px; border-radius:20px; font-weight:700;">
+                                        {{ entrega.calificacion }}
+                                    </span>
+                                {% else %}
+                                    <a href="{% url 'trabajos:calificar' entrega.id %}">
+                                        <button style="background:#d88df4; color:white; border:none; padding:6px 16px; border-radius:8px; font-weight:600; cursor:pointer;">
+                                            Calificar
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="color:#b39cc4; text-align:center; padding:20px;">Ningún alumno ha entregado aún.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

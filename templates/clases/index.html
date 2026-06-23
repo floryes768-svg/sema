@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Clases{% endblock %}
+{% block content %}
+<div style="padding:40px; max-width:1000px; margin:0 auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+        <h1 style="color:#2b0830; margin:0;">Mis Clases</h1>
+        {% if request.user.rol == 'maestro' %}
+            <a href="{% url 'clases:crear' %}">
+                <button style="background:#d88df4; color:white; border:none; padding:10px 24px; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer;">
+                    + Crear clase
+                </button>
+            </a>
+        {% else %}
+            <a href="{% url 'clases:unirse' %}">
+                <button style="background:#d88df4; color:white; border:none; padding:10px 24px; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer;">
+                    + Unirse a clase
+                </button>
+            </a>
+        {% endif %}
+    </div>
+
+    {% if request.user.rol == 'maestro' %}
+        {% if materias %}
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:20px;">
+                {% for materia in materias %}
+                    <a href="{% url 'clases:especialidades' materia.nombre %}" style="text-decoration:none;">
+                        <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1); transition:transform 0.2s;"
+                             onmouseover="this.style.transform='translateY(-4px)'"
+                             onmouseout="this.style.transform='translateY(0)'">
+                            <div style="width:50px; height:50px; background:#d88df4; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+                                <span style="color:white; font-size:1.5rem; font-weight:700;">{{ materia.nombre|first|upper }}</span>
+                            </div>
+                            <h3 style="color:#2b0830; margin:0 0 8px;">{{ materia.nombre }}</h3>
+                            <p style="color:#7b5c8a; font-size:0.9rem; margin:0 0 12px;">{{ materia.especialidad }}</p>
+                            <p style="color:#b39cc4; font-size:0.8rem; margin:0;">
+                                {{ materia.grupos.count }} grupo{{ materia.grupos.count|pluralize }}
+                            </p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="text-align:center; padding:80px 20px; color:#9b7ab0;">
+                <p style="font-size:3rem;">📚</p>
+                <p style="font-size:1.1rem;">No tienes clases creadas aún.</p>
+                <a href="{% url 'clases:crear' %}">
+                    <button style="background:#d88df4; color:white; border:none; padding:10px 24px; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; margin-top:12px;">
+                        Crear primera clase
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+    {% else %}
+        {% if clases %}
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:20px;">
+                {% for clase in clases %}
+                    <a href="{% url 'clases:detalle' clase.id %}" style="text-decoration:none;">
+                        <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1); transition:transform 0.2s;"
+                             onmouseover="this.style.transform='translateY(-4px)'"
+                             onmouseout="this.style.transform='translateY(0)'">
+                            <div style="width:50px; height:50px; background:#d88df4; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+                                <span style="color:white; font-size:1.5rem; font-weight:700;">{{ clase.nombre|first|upper }}</span>
+                            </div>
+                            <h3 style="color:#2b0830; margin:0 0 8px;">{{ clase.nombre }}</h3>
+                            <p style="color:#7b5c8a; font-size:0.9rem; margin:0 0 12px;">{{ clase.descripcion }}</p>
+                            <span style="background:#ede0f7; color:#5c2d7a; padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:600;">
+                                {{ clase.get_semestre_display }}
+                            </span>
+                            <p style="color:#b39cc4; font-size:0.8rem; margin:8px 0 0;">
+                                {{ clase.alumnos.count }} alumno{{ clase.alumnos.count|pluralize }}
+                            </p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="text-align:center; padding:80px 20px; color:#9b7ab0;">
+                <p style="font-size:3rem;">📚</p>
+                <p style="font-size:1.1rem;">No estás inscrito en ninguna clase.</p>
+                <a href="{% url 'clases:unirse' %}">
+                    <button style="background:#d88df4; color:white; border:none; padding:10px 24px; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; margin-top:12px;">
+                        Unirse a una clase
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

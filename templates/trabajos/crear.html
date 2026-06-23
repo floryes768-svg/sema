@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Asignar Trabajo{% endblock %}
+{% block content %}
+<div style="max-width:500px; margin:60px auto; background:white; padding:40px; border-radius:20px; box-shadow:0 8px 32px rgba(140,60,180,0.15);">
+    <a href="{% url 'trabajos:index' %}" style="color:#d88df4; font-weight:600; text-decoration:none;">← Volver</a>
+    <h2 style="color:#2b0830; margin:16px 0 24px;">Asignar trabajo</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="margin-bottom:16px;">
+            <label style="font-weight:600; color:#4b2a5f;">Clase</label>
+            <select name="clase" required
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box;">
+                {% for clase in clases %}
+                    <option value="{{ clase.id }}">{{ clase.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="font-weight:600; color:#4b2a5f;">Título</label>
+            <input type="text" name="titulo" required placeholder="Ej: Tarea 1"
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="font-weight:600; color:#4b2a5f;">Descripción (opcional)</label>
+            <textarea name="descripcion" rows="3" placeholder="Instrucciones del trabajo..."
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none; resize:vertical;"></textarea>
+        </div>
+        <div style="margin-bottom:24px;">
+            <label style="font-weight:600; color:#4b2a5f;">Fecha de entrega</label>
+            <input type="date" name="fecha_entrega" required
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+        </div>
+        <div style="margin-bottom:24px;">
+            <label style="font-weight:600; color:#4b2a5f;">Imagen adjunta (opcional)</label>
+            <input type="file" name="imagen" accept="image/*"
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box;">
+        </div>
+        <button type="submit"
+            style="width:100%; padding:12px; background:#d88df4; color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:600; cursor:pointer;">
+            Asignar trabajo
+        </button>
+    </form>
+</div>
+{% endblock %}

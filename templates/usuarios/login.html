@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div style="min-height:100vh; display:flex; align-items:center; justify-content:center;">
+        <div style="background:white; padding:40px; border-radius:20px; width:100%; max-width:400px; box-shadow: 0 8px 32px rgba(140,60,180,0.15);">
+            <div style="text-align:center; margin-bottom:28px;">
+                <img src="{% static 'images/zorri.png.png' %}" alt="Logo" style="width:100px;">
+                <h2 style="color:#2b0830; margin-top:12px;">Iniciar sesión</h2>
+            </div>
+            {% if error %}
+                <p style="color:red; text-align:center;">{{ error }}</p>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div style="margin-bottom:16px;">
+                    <label style="font-weight:600; color:#4b2a5f;">Usuario</label>
+                    <input type="text" name="username" required
+                        style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; outline:none; box-sizing:border-box;">
+                </div>
+                <div style="margin-bottom:24px;">
+                    <label style="font-weight:600; color:#4b2a5f;">Contraseña</label>
+                    <input type="password" name="password" required
+                        style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; outline:none; box-sizing:border-box;">
+                </div>
+                <button type="submit"
+                    style="width:100%; padding:12px; background:#d88df4; color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:600; cursor:pointer;">
+                    Entrar
+                </button>
+            </form>
+            <p style="text-align:center; margin-top:16px; color:#4b2a5f;">
+                ¿No tienes cuenta? <a href="{% url 'registro' %}" style="color:#d88df4; font-weight:600;">Regístrate</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

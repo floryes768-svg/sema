@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}{{ nombre }}{% endblock %}
+{% block content %}
+<div style="padding:40px; max-width:1000px; margin:0 auto;">
+
+    <!-- Encabezado -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:30px;">
+        <div style="display:flex; align-items:center; gap:16px;">
+            <div style="width:56px; height:56px; background:#d88df4; border-radius:14px; display:flex; align-items:center; justify-content:center;">
+                <span style="color:white; font-size:1.8rem; font-weight:700;">{{ nombre|first|upper }}</span>
+            </div>
+            <div>
+                <h1 style="color:#2b0830; margin:0;">{{ nombre }}</h1>
+                <span style="color:#9b7ab0; font-size:0.95rem;">Selecciona una especialidad</span>
+            </div>
+        </div>
+        <a href="{% url 'clases:index' %}">
+            <button style="background:#ede0f7; color:#5c2d7a; border:none; padding:8px 16px; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                ← Volver
+            </button>
+        </a>
+    </div>
+
+    <!-- Especialidades -->
+    {% if materias %}
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:20px;">
+            {% for materia in materias %}
+                <a href="{% url 'clases:detalle_materia' materia.id %}" style="text-decoration:none;">
+                    <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1); transition:transform 0.2s;"
+                         onmouseover="this.style.transform='translateY(-4px)'"
+                         onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width:44px; height:44px; background:#ede0f7; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+                            <span style="color:#7b2fa0; font-size:1.3rem; font-weight:700;">{{ materia.especialidad|first|upper }}</span>
+                        </div>
+                        <h3 style="color:#2b0830; margin:0 0 8px;">{{ materia.especialidad }}</h3>
+                        <p style="color:#b39cc4; font-size:0.85rem; margin:0;">
+                            {{ materia.grupos.count }} grupo{{ materia.grupos.count|pluralize }}
+                        </p>
+                        <div style="display:flex; gap:8px; margin-top:16px; border-top:1px solid #f0e0fa; padding-top:16px;">
+                            <a href="{% url 'clases:editar_materia' materia.id %}" style="flex:1;">
+                                <button style="width:100%; background:#f3d6fd; color:#7b2fa0; border:none; padding:6px; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer;">
+                                    Editar
+                                </button>
+                            </a>
+                            <a href="{% url 'clases:eliminar_materia' materia.id %}" style="flex:1;">
+                                <button style="width:100%; background:#fde8e8; color:#c0392b; border:none; padding:6px; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer;">
+                                     Eliminar
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align:center; padding:80px 20px; color:#9b7ab0;">
+            <p style="font-size:2.5rem;">📚</p>
+            <p style="font-size:1rem;">No hay especialidades registradas.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

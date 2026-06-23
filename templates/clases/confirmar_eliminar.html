@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Confirmar Eliminar{% endblock %}
+{% block content %}
+<div style="max-width:500px; margin:60px auto; background:white; padding:40px; border-radius:20px; box-shadow:0 8px 32px rgba(140,60,180,0.15); text-align:center;">
+    <p style="font-size:3rem;">⚠️</p>
+    <h2 style="color:#2b0830; margin-bottom:12px;">¿Estás seguro?</h2>
+    <p style="color:#7b5c8a; margin-bottom:24px;">Se eliminará <strong>{{ objeto }}</strong> y no podrás recuperarlo.</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit"
+            style="width:100%; padding:12px; background:#e05252; color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:600; cursor:pointer;">
+            Sí, eliminar
+        </button>
+        <a href="{% url 'clases:index' %}">
+            <button type="button"
+                style="width:100%; padding:12px; background:#f3d6fd; color:#7b2fa0; border:none; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; margin-top:10px;">
+                Cancelar
+            </button>
+        </a>
+    </form>
+</div>
+{% endblock %}

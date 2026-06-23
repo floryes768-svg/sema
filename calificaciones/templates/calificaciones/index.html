@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}Calificaciones{% endblock %}
+{% block content %}
+<div style="padding:40px; max-width:1000px; margin:0 auto;">
+    <h1 style="color:#2b0830; margin-bottom:30px;">Calificaciones</h1>
+
+    {% if resumen %}
+        <!-- VISTA MAESTRO -->
+        <div style="display:grid; gap:24px;">
+            {% for item in resumen %}
+                <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <div>
+                            <h3 style="color:#2b0830; margin:0;">{{ item.alumno.get_full_name|default:item.alumno.username }}</h3>
+                            <p style="color:#7b5c8a; margin:4px 0 0; font-size:0.9rem;">{{ item.clase.nombre }}</p>
+                        </div>
+                        <div style="display:flex; gap:12px;">
+                            {% if item.promedio_notas %}
+                                <div style="background:#f3d6fd; padding:8px 16px; border-radius:10px; text-align:center;">
+                                    <p style="color:#9b59b6; font-size:0.75rem; margin:0; font-weight:600;">PROMEDIO NOTAS</p>
+                                    <p style="color:#2b0830; font-size:1.3rem; font-weight:700; margin:0;">{{ item.promedio_notas }}</p>
+                                </div>
+                            {% endif %}
+                            {% if item.promedio_entregas %}
+                                <div style="background:#e8f5e9; padding:8px 16px; border-radius:10px; text-align:center;">
+                                    <p style="color:#2e7d32; font-size:0.75rem; margin:0; font-weight:600;">PROMEDIO TRABAJOS</p>
+                                    <p style="color:#2b0830; font-size:1.3rem; font-weight:700; margin:0;">{{ item.promedio_entregas }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if item.notas %}
+                        <p style="color:#7b5c8a; font-size:0.85rem; font-weight:600; margin:0 0 8px;">NOTAS</p>
+                        <div style="display:grid; gap:8px; margin-bottom:16px;">
+                            {% for nota in item.notas %}
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:#faf5ff; padding:10px 16px; border-radius:10px;">
+                                    <p style="margin:0; color:#2b0830;">{{ nota.titulo }}</p>
+                                    <span style="background:#f3d6fd; color:#7b2fa0; padding:4px 14px; border-radius:20px; font-weight:700;">{{ nota.calificacion }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if item.entregas %}
+                        <p style="color:#7b5c8a; font-size:0.85rem; font-weight:600; margin:0 0 8px;">TRABAJOS</p>
+                        <div style="display:grid; gap:8px;">
+                            {% for entrega in item.entregas %}
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:#f0faf0; padding:10px 16px; border-radius:10px;">
+                                    <p style="margin:0; color:#2b0830;">{{ entrega.trabajo.titulo }}</p>
+                                    <span style="background:#e8f5e9; color:#2e7d32; padding:4px 14px; border-radius:20px; font-weight:700;">{{ entrega.calificacion }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+    {% elif resumen_alumno %}
+        <!-- VISTA ALUMNO -->
+        <div style="display:grid; gap:24px;">
+            {% for item in resumen_alumno %}
+                <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <h3 style="color:#2b0830; margin:0;">{{ item.clase.nombre }}</h3>
+                        <div style="display:flex; gap:12px;">
+                            {% if item.promedio_notas %}
+                                <div style="background:#f3d6fd; padding:8px 16px; border-radius:10px; text-align:center;">
+                                    <p style="color:#9b59b6; font-size:0.75rem; margin:0; font-weight:600;">PROMEDIO NOTAS</p>
+                                    <p style="color:#2b0830; font-size:1.3rem; font-weight:700; margin:0;">{{ item.promedio_notas }}</p>
+                                </div>
+                            {% endif %}
+                            {% if item.promedio_entregas %}
+                                <div style="background:#e8f5e9; padding:8px 16px; border-radius:10px; text-align:center;">
+                                    <p style="color:#2e7d32; font-size:0.75rem; margin:0; font-weight:600;">PROMEDIO TRABAJOS</p>
+                                    <p style="color:#2b0830; font-size:1.3rem; font-weight:700; margin:0;">{{ item.promedio_entregas }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if item.notas %}
+                        <p style="color:#7b5c8a; font-size:0.85rem; font-weight:600; margin:0 0 8px;">NOTAS</p>
+                        <div style="display:grid; gap:8px; margin-bottom:16px;">
+                            {% for nota in item.notas %}
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:#faf5ff; padding:10px 16px; border-radius:10px;">
+                                    <p style="margin:0; color:#2b0830;">{{ nota.titulo }}</p>
+                                    <span style="background:#f3d6fd; color:#7b2fa0; padding:4px 14px; border-radius:20px; font-weight:700;">{{ nota.calificacion }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if item.entregas %}
+                        <p style="color:#7b5c8a; font-size:0.85rem; font-weight:600; margin:0 0 8px;">TRABAJOS</p>
+                        <div style="display:grid; gap:8px;">
+                            {% for entrega in item.entregas %}
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:#f0faf0; padding:10px 16px; border-radius:10px;">
+                                    <p style="margin:0; color:#2b0830;">{{ entrega.trabajo.titulo }}</p>
+                                    <span style="background:#e8f5e9; color:#2e7d32; padding:4px 14px; border-radius:20px; font-weight:700;">{{ entrega.calificacion }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <div style="text-align:center; padding:80px 20px; color:#9b7ab0;">
+            <p style="font-size:3rem;">📊</p>
+            <p>No hay calificaciones registradas aún.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

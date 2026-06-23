@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Área Maestro{% endblock %}
+
+{% block content %}
+<div style="padding: 40px; max-width: 900px; margin: auto;">
+
+    <h1 style="color:#2b0830;">Bienvenido Maestro, {{ request.user.username }} 👋</h1>
+
+    <p style="font-size:1.1rem; margin-top:10px;">
+        Bienvenido al Sistema de Gestión Escolar <strong>SEMA</strong>, tu plataforma para 
+        administrar y organizar la información académica de tus alumnos en un solo lugar.
+    </p>
+
+    <h2 style="color:#2b0830; margin-top:30px;">¿Qué es SEMA?</h2>
+    <p>
+        SEMA es un sistema diseñado para facilitar la gestión escolar, permitiendo a los maestros
+        administrar clases, registrar notas, asignar trabajos y gestionar calificaciones de forma
+        organizada y eficiente.
+    </p>
+
+    <h2 style="color:#2b0830; margin-top:30px;">Sirve para:</h2>
+    <ul style="line-height: 2rem; font-size:1rem;">
+        <li> Administra tus <strong>clases</strong> y materias fácilmente.</li>
+        <li> Registra y gestiona las <strong>notas</strong> de tus alumnos.</li>
+        <li> Asigna y revisa <strong>trabajos</strong> de forma sencilla.</li>
+        <li> Lleva el control de las <strong>calificaciones</strong> al instante.</li>
+        <li> Información segura y accesible solo para ti.</li>
+    </ul>
+
+</div>
+{% endblock %}

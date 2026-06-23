@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Crear Clase{% endblock %}
+{% block content %}
+<div style="max-width:500px; margin:60px auto; background:white; padding:40px; border-radius:20px; box-shadow:0 8px 32px rgba(140,60,180,0.15);">
+    <h2 style="color:#2b0830; margin-bottom:24px;">Nueva Clase</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div style="margin-bottom:16px;">
+            <label style="font-weight:600; color:#4b2a5f;">Nombre de la materia</label>
+            <input type="text" name="nombre" required
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="font-weight:600; color:#4b2a5f;">Especialidad</label>
+            <input type="text" name="especialidad" required
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="font-weight:600; color:#4b2a5f;">Semestre</label>
+            <select name="semestre" required
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none; background:white; color:#2b0830;">
+                {% for valor, etiqueta in semestres %}
+                    <option value="{{ valor }}">{{ etiqueta }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-bottom:24px;">
+            <label style="font-weight:600; color:#4b2a5f;">Descripción (opcional)</label>
+            <input type="text" name="descripcion"
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+        </div>
+        <button type="submit"
+            style="width:100%; padding:12px; background:#d88df4; color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:600; cursor:pointer;">
+            Crear clase
+        </button>
+        <a href="{% url 'clases:index' %}">
+            <button type="button"
+                style="width:100%; padding:12px; background:#f3d6fd; color:#7b2fa0; border:none; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; margin-top:10px;">
+                Cancelar
+            </button>
+        </a>
+    </form>
+</div>
+{% endblock %}

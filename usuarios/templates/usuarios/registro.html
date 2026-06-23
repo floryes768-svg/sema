@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+<div style="max-width:400px; margin:60px auto; background:white; padding:32px; border-radius:16px;">
+    <h2 style="text-align:center; color:#2b0830;">Crear cuenta</h2>
+    {% if error %}
+        <p style="color:red; text-align:center;">{{ error }}</p>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <div style="margin-bottom:16px;">
+            <label style="font-weight:600;">Usuario</label>
+            <input type="text" name="username" required
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-top:6px;">
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="font-weight:600;">Contraseña</label>
+            <input type="password" name="password" required
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-top:6px;">
+        </div>
+        <div style="margin-bottom:24px;">
+            <label style="font-weight:600;">Rol</label>
+            <select name="rol" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-top:6px;">
+                <option value="alumno">Alumno</option>
+                <option value="maestro">Maestro</option>
+            </select>
+        </div>
+        <button type="submit"
+            style="width:100%; padding:12px; background:#d88df4; color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:600; cursor:pointer;">
+            Registrarse
+        </button>
+    </form>
+    <p style="text-align:center; margin-top:16px;">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+</div>
+{% endblock %}

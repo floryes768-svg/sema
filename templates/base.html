@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Académico{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/scripts.js' %}" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="nav-left">
+                    <div class="logos">
+                        <img src="{% static 'images/dgti.png' %}" alt="DGETI" class="logo">
+                        <img src="{% static 'images/logocbtis.png' %}" alt="CBTis 125" class="logo">
+                    </div>
+                    <h1 class="nav-title">SEMA</h1>
+                </div>
+
+                <button class="menu-btn" id="menu-btn" aria-expanded="false">
+                    ☰
+                    <span class="menu-icon"></span>
+                </button>
+
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="{% url 'dashboard' %}">Inicio</a></li>
+                    <li><a href="{% url 'clases:index' %}">Clases</a></li>
+                    <li><a href="{% url 'notas:index' %}">Notas</a></li>
+                    <li><a href="{% url 'trabajos:index' %}">Trabajos</a></li>
+                    <li><a href="{% url 'calificaciones:index' %}">Calificaciones</a></li>
+                    <li><a href="{% url 'perfil' %}">Perfil</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page-content">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
