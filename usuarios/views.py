@@ -7,13 +7,20 @@ def registro(request):
         username = request.POST['username']
         password = request.POST['password']
         rol = request.POST['rol']
+        nombre_completo = request.POST.get('nombre_completo', '')
+        correo = request.POST.get('correo', '')
         if Usuario.objects.filter(username=username).exists():
             return render(request, 'usuarios/registro.html', {'error': 'El usuario ya existe'})
-        usuario = Usuario.objects.create_user(username=username, password=password, rol=rol)
+        usuario = Usuario.objects.create_user(
+            username=username,
+            password=password,
+            rol=rol,
+            nombre_completo=nombre_completo,
+            correo=correo
+        )
         login(request, usuario)
         return redirect('dashboard')
     return render(request, 'usuarios/registro.html')
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
