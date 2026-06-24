@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Historial de Asistencia{% endblock %}
+{% block content %}
+<div style="padding:40px; max-width:1100px; margin:0 auto;">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+        <div>
+            <h1 style="color:#2b0830; margin:0;">Historial de Asistencia</h1>
+            <p style="color:#9b7ab0; margin:4px 0 0;">{{ clase.nombre }}</p>
+        </div>
+        <a href="{% url 'asistencia:pasar_lista' clase.id %}">
+            <button style="background:#d88df4; color:white; border:none; padding:8px 16px; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                + Pasar lista hoy
+            </button>
+        </a>
+    </div>
+
+    {% if fechas %}
+        <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; background:white; border-radius:16px; overflow:hidden; box-shadow:0 4px 16px rgba(140,60,180,0.1);">
+                <thead>
+                    <tr style="background:#d88df4; color:white;">
+                        <th style="padding:12px 16px; text-align:left; font-weight:700;">Alumno</th>
+                        {% for fecha in fechas %}
+                            <th style="padding:12px 8px; text-align:center; font-size:0.75rem; min-width:50px;">
+                                {{ fecha|date:"d/m" }}
+                            </th>
+                        {% endfor %}
+                        <th style="padding:12px 8px; text-align:center;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fila in tabla %}
+                        <tr style="border-bottom:1px solid #f0e0fa;">
+                            <td style="padding:12px 16px; color:#2b0830; font-weight:600;">
+                                {% if fila.alumno.nombre_completo %}{{ fila.alumno.nombre_completo }}{% else %}{{ fila.alumno.username }}{% endif %}
+                            </td>
+                            {% for estado in fila.asistencias %}
+                                <td style="padding:8px; text-align:center;">
+                                    {% if estado == 'P' %}
+                                        <span style="background:#d4f7d4; color:#2d7a2d; padding:2px 8px; border-radius:10px; font-size:0.8rem; font-weight:700;">P</span>
+                                    {% elif estado == 'A' %}
+                                        <span style="background:#fde8e8; color:#c0392b; padding:2px 8px; border-radius:10px; font-size:0.8rem; font-weight:700;">A</span>
+                                    {% elif estado == 'R' %}
+                                        <span style="background:#fef3cd; color:#856404; padding:2px 8px; border-radius:10px; font-size:0.8rem; font-weight:700;">R</span>
+                                    {% else %}
+                                        <span style="color:#ccc;">-</span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            <td style="padding:8px; text-align:center;">
+                                <span style="background:#f3d6fd; color:#7b2fa0; padding:4px 10px; border-radius:10px; font-size:0.85rem; font-weight:700;">
+                                    {{ fila.total }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align:center; padding:80px 20px; color:#9b7ab0; background:white; border-radius:16px;">
+            <p style="font-size:2.5rem;">📋</p>
+            <p>No hay asistencias registradas aún.</p>
+            <a href="{% url 'asistencia:pasar_lista' clase.id %}">
+                <button style="background:#d88df4; color:white; border:none; padding:10px 24px; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; margin-top:12px;">
+                    Pasar primera lista
+                </button>
+            </a>
+        </div>
+    {% endif %}
+
+    <a href="{% url 'clases:detalle' clase.id %}" style="display:block; text-align:center; margin-top:16px; color:#d88df4; font-weight:600; text-decoration:none;">← Volver a la clase</a>
+</div>
+{% endblock %}

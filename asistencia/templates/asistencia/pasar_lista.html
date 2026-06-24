@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Pasar Lista{% endblock %}
+{% block content %}
+<div style="padding:40px; max-width:800px; margin:0 auto;">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+        <div>
+            <h1 style="color:#2b0830; margin:0;">Pasar Lista</h1>
+            <p style="color:#9b7ab0; margin:4px 0 0;">{{ clase.nombre }}</p>
+        </div>
+        <a href="{% url 'asistencia:historial' clase.id %}">
+            <button style="background:#ede0f7; color:#5c2d7a; border:none; padding:8px 16px; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                📋 Ver historial
+            </button>
+        </a>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1); margin-bottom:20px;">
+            <label style="font-weight:600; color:#4b2a5f;">Fecha</label>
+            <input type="date" name="fecha" value="{{ fecha }}" required
+                style="width:100%; padding:10px; border-radius:8px; border:1px solid #d88df4; margin-top:6px; box-sizing:border-box; outline:none;">
+        </div>
+
+        {% if alumnos %}
+            <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(140,60,180,0.1);">
+                <h3 style="color:#4b2a5f; margin:0 0 16px;">Alumnos ({{ alumnos.count }})</h3>
+                {% for alumno in alumnos %}
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f0e0fa;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:36px; height:36px; background:#d88df4; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:0.9rem;">
+                                {{ alumno.username|first|upper }}
+                            </div>
+                            <span style="color:#2b0830; font-weight:600;">
+                                {% if alumno.nombre_completo %}{{ alumno.nombre_completo }}{% else %}{{ alumno.username }}{% endif %}
+                            </span>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+                                <input type="radio" name="estado_{{ alumno.id }}" value="P"
+                                    {% if asistencias_hoy|default:'' %}
+                                        {% if asistencias_hoy %}
+                                            {% for key, val in asistencias_hoy.items %}{% if key == alumno.id %}{% if val == 'P' %}checked{% endif %}{% endif %}{% endfor %}
+                                        {% endif %}
+                                    {% else %}checked{% endif %}>
+                                <span style="background:#d4f7d4; color:#2d7a2d; padding:4px 10px; border-radius:20px; font-size:0.85rem; font-weight:600;">✓ Presente</span>
+                            </label>
+                            <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+                                <input type="radio" name="estado_{{ alumno.id }}" value="A"
+                                    {% for key, val in asistencias_hoy.items %}{% if key == alumno.id %}{% if val == 'A' %}checked{% endif %}{% endif %}{% endfor %}>
+                                <span style="background:#fde8e8; color:#c0392b; padding:4px 10px; border-radius:20px; font-size:0.85rem; font-weight:600;">✗ Ausente</span>
+                            </label>
+                            <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+                                <input type="radio" name="estado_{{ alumno.id }}" value="R"
+                                    {% for key, val in asistencias_hoy.items %}{% if key == alumno.id %}{% if val == 'R' %}checked{% endif %}{% endif %}{% endfor %}>
+                                <span style="background:#fef3cd; color:#856404; padding:4px 10px; border-radius:20px; font-size:0.85rem; font-weight:600;">⏰ Retardo</span>
+                            </label>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit"
+                style="width:100%; padding:14px; background:#d88df4; color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:600; cursor:pointer; margin-top:20px;">
+                Guardar asistencia
+            </button>
+        {% else %}
+            <div style="text-align:center; padding:60px 20px; color:#9b7ab0; background:white; border-radius:16px;">
+                <p style="font-size:2rem;">👥</p>
+                <p>No hay alumnos inscritos en esta clase aún.</p>
+            </div>
+        {% endif %}
+    </form>
+
+    <a href="{% url 'clases:detalle' clase.id %}" style="display:block; text-align:center; margin-top:16px; color:#d88df4; font-weight:600; text-decoration:none;">← Volver a la clase</a>
+</div>
+{% endblock %}

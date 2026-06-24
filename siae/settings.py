@@ -21,7 +21,8 @@ INSTALLED_APPS = [
     'clases',
     'notas',
     'trabajos.apps.TrabajosConfig',
-    'calificaciones'
+    'calificaciones',
+    'asistencia',
 ]
 
 MIDDLEWARE = [
